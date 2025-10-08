@@ -1,96 +1,38 @@
-# Online Drawing Board
-
- A real-time multiplayer drawing and guessing game built with ASP.NET Core, SignalR, and React.
-
-## Table of Contents
-1. Overview
-2. Features
-3. Tech stack
-4. Project structure
-5. Getting started
-    - Prerequisites
-    - Installation
-    - Running the App
-6. Database Design
-7. Real-Time Communication
-8. Branching Strategy
-9. Git Setup
-10. Future improvements
-11. License
+# Online Drawing and Guessing game
 
 ## Overview
 
-Online Drawing Board is a collaborative, real-time web app where players join a lobby, take turns drawing a secret word, and others guess it through chat.
+Online Drawing and Guessing game is a collaborative, real-time web app where players join a lobby, take turns drawing a secret word, and others guess it through chat.
 Points are awarded for correct guesses and drawing accuracy.
 
-## Features
-
-🎨 Real-time shared drawing canvas using SignalR.
-
-💬 Live chat for guessing and communication.
-
-🏆 Scoreboard updates automatically.
-
-🕹️ Lobby system for multiplayer sessions.
-
-⏱️ Timed rounds with word rotation.
-
-🔐 Room join codes (for private games).
-## Tech stack
-
-### Frontend
-
+### Frontend stack
 - React (Vite or CRA)
-
 - HTML5 Canvas API
-
 - Tailwind CSS
-
 - @microsoft/signalr (client library)
 
-### Backend
-
+### Backend stack
 - ASP.NET Core 8 Web API
-
 - SignalR for real-time communication
-
 - Entity Framework Core (for database)
-
-- SQL Server (local or cloud)
-
-### Dev Tools
-
-- Visual Studio / VS Code
-
-- Git & GitHub
-
-- Postman (for API testing)
+- SQL Server
 
 ## Project structure
 
-### 1. FrontEnd (React)
- - Technologies : React, HTML5, Socket/SignalR client
+### 1. Front end components
 - Components:
     - CanvasBoard - drawing and rendering strokes.
     - ChatBox - guessing word in real time.
-    - PlayerList - shows connected players and their scores.
+    - Leaderboard - shows connected players and their scores.
     - GameControls - start game, word selection, timers.
     - lobby - join/create a room.
 
-### 2. Backend (C#, ASP.NET Core)
+### 2. Backend
 
-- Technologies: ASP.NET Core Web API, SignalR
-
-- Responsibilities:
-    - Handle user connections & rooms.
-    - Broadcast drawing events (lines, strokes, clear canvas).
-    - Manage chat and validate guesses.
-    - Keep track of game state (whose turn, current word, scores).
-    - Persist session data (can use in-memory storage for MVP, database later).
 
 ### Example of project structure:
 ```
-/OnlineDrawingBoard
+/DrawAndGuess
 ├── /backend
 │   ├── Controllers/
 │   │   ├── GameController.cs
@@ -402,17 +344,5 @@ backend/.vs/
 .env
 ```
 
-## Future improvements
--  Add authentication (optional login).
-
--  Persistent leaderboards.
-
--  Add drawing tools (colors, eraser, shapes).
-
--  Mobile-friendly UI.
-
--  Support image saving and replay.
-
 ## License
-
 This project is open-source under the MIT License.
