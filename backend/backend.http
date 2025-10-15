@@ -1,6 +1,9 @@
 @backend_HostAddress = http://localhost:5146
 
-GET {{backend_HostAddress}}/weatherforecast/
+GET {{backend_HostAddress}}/api/player/setDrawer?name=John
 Accept: application/json
+Content-Type: application/json
 
-###
+{
+  "name": "John"
+}
