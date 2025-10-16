@@ -1,0 +1,216 @@
+openapi: 3.0.3
+info:
+  title: Drawing Game API
+  version: "1.0.0"
+  description: |
+    REST API specification for the Drawing Game backend.
+    Includes room management and player creation endpoints.
+    Designed for integration with a realtime SignalR event layer.
+
+servers:
+  - url: http://localhost:5290/api
+    description: Local development server
+
+paths:
+  /rooms:
+    get:
+      summary: Get all game rooms
+      description: Returns a list of all game rooms (used for the lobby screen).
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GameRoomSummary'
+
+    post:
+      summary: Create a new game room
+      description: Creates a new game room using the provided host and configuration.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateRoomRequest'
+      responses:
+        '201':
+          description: Room successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameRoomSummary'
+        '400':
+          description: Invalid input
+
+  /rooms/{id}/join:
+    post:
+      summary: Join an existing game room
+      description: Joins an existing game room by ID.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: ID of the room to join.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JoinRoomRequest'
+      responses:
+        '200':
+          description: Joined successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JoinRoomResponse'
+        '404':
+          description: Room not found
+        '409':
+          description: Room is full
+
+  /rooms/{id}:
+    get:
+      summary: Get room by ID
+      description: Retrieves current room information (used for refreshing or initial sync).
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: ID of the room.
+      responses:
+        '200':
+          description: Room details retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameRoomDetails'
+        '404':
+          description: Room not found
+
+  /players:
+    post:
+      summary: Create a player
+      description: Creates a new player and returns its generated ID. Used when a user enters a name before joining or creating a room.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePlayerRequest'
+      responses:
+        '201':
+          description: Player successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Player'
+        '400':
+          description: Invalid input
+
+components:
+  schemas:
+    GameRoomSummary:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: Alex's Room
+        currentPlayers:
+          type: integer
+          example: 3
+        playerLimit:
+          type: integer
+          example: 8
+        currentRound:
+          type: integer
+          example: 2
+        roundLimit:
+          type: integer
+          example: 5
+        gameState:
+          type: string
+          enum: [WaitingForPlayers, InProgress, RoundEnded, Finished]
+          example: WaitingForPlayers
+
+    GameRoomDetails:
+      allOf:
+        - $ref: '#/components/schemas/GameRoomSummary'
+        - type: object
+          properties:
+            host:
+              $ref: '#/components/schemas/Player'
+            players:
+              type: array
+              items:
+                $ref: '#/components/schemas/Player'
+
+    CreateRoomRequest:
+      type: object
+      required: [hostId, name, playerLimit, roundLimit]
+      properties:
+        hostId:
+          type: integer
+          example: 21312
+        name:
+          type: string
+          example: Alex's Room
+        playerLimit:
+          type: integer
+          example: 8
+        roundLimit:
+          type: integer
+          example: 5
+
+    JoinRoomRequest:
+      type: object
+      required: [playerId]
+      properties:
+        playerId:
+          type: integer
+          example: 31321
+
+    JoinRoomResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        playerId:
+          type: integer
+          example: 31321
+
+    CreatePlayerRequest:
+      type: object
+      required: [name]
+      properties:
+        name:
+          type: string
+          example: Alex
+
+    Player:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 31321
+        name:
+          type: string
+          example: Alex
+        roomId:
+          type: integer
+          nullable: true
+          example: 1
+        score:
+          type: integer
+          example: 0
