@@ -22,3 +22,4 @@ backend/.vs/
 .DS_Store
 Thumbs.db
 .vs/
+*.sln
