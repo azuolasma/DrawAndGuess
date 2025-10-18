@@ -1,13 +1,17 @@
 using backend.Hubs;
+using backend.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddSignalR();
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+builder.Services.AddSwaggerGen();
+builder.Services.AddOpenApi(); // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 
+// Singletons
+builder.Services.AddSingleton<IdGeneratorService>();
+builder.Services.AddSingleton<GameRoomManagerService>();
+builder.Services.AddSingleton<PlayerManagerService>();
 
 
 var app = builder.Build();
@@ -16,15 +20,12 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
-
-
-
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
 app.MapHub<GameHub>("/gamehub");
 

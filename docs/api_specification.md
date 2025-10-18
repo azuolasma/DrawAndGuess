@@ -141,7 +141,7 @@ No request body.
 ## `POST /api/players`
 
 **Description:**
-Creates a new player object and returns its generated ID. This endpoint is used when a user enters their display name before joining or creating a room.
+Creates a new player object and returns its generated ID and name. This endpoint is used when a user enters their display name before joining or creating a room.
 
 **Parameters:**
 No parameters.
@@ -165,7 +165,7 @@ No parameters.
 - 201 Created — Player successfully created
 - 400 Bad Request — Invalid input
 
-
+## `GET /api/players/{id}`
 # Realtime events contract
 
 TODO
